@@ -17,11 +17,11 @@ Parse *.osm file(openstreetmap) and show on list
   <tag k="highway" v="residential"/>
   <tag k="review" v="no"/>
  </way>
-```
-- <way> </way> 태그 개수 가져오기 
+
+- first tag <way> </way> 개수 가져오기 
 - attribute 데이터 가져오기 
 - 데이터 출력 --> QTreeWidget
-
+```
 ### 3. 제작할 기능 
 - [ ] xml read 하는 API 구성
 - [ ] 노드 분석 기능 
