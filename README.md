@@ -34,7 +34,7 @@ Parse *.osm file(openstreetmap) and show on list
 ```
 ### 3. 제작할 기능 
 - [X] xml read 하는 API 구성
-- [ ] 노드 분석 기능 
-- [ ] 데이터 출력 
+- [X] 노드 분석 기능 
+- [ ] 데이터 출력 --  (~ 6월 4째주)
  
  
