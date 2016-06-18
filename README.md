@@ -5,7 +5,13 @@ Parse *.osm file(openstreetmap) and show on list
 오픈스트리트맵에 수많은 테그가 있습니다.
 이 태그의 데이터를 분류하여 보기 쉽게 하고자 합니다.
 
-### 2. 어떻게 만들 것인가?
+### 2. TO DO List 
+- [X] xml read 하는 API 구성
+- [ ] tag 데이터 분류하기
+- [ ] attribute 데이터 분류하기
+- [ ] 데이터 출력 using TreeWidget
+
+### 3. osm file tag 구성
 ```
  OSM File format
 <osm version="0.6" generator="CGImap 0.4.0 (6509 thorn-04.openstreetmap.org)" copyright="OpenStreetMap and contributors">
@@ -26,15 +32,15 @@ Parse *.osm file(openstreetmap) and show on list
   <tag k="highway" v="unclassified"/>
  </way>
 
+ <relation id="50470" visible="true" version="2" changeset="7309950" timestamp="2011-02-17T05:30:40Z" user="geri07" uid="220650">
+  <member type="way" ref="22784210" role="outer"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+
  </osm>   --> tag
 
-- first tag <way> </way> 개수 가져오기 
-- attribute 데이터 가져오기 
-- 데이터 출력 --> QTreeWidget
+
 ```
-### 3. 제작할 기능 
-- [X] xml read 하는 API 구성
-- [X] 노드 분석 기능 
-- [ ] 데이터 출력 --  (~ 6월 4째주)
+
  
  
