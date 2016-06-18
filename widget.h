@@ -2,11 +2,12 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <QThread>
-#include <QDomDocument>
+#include <QVector>
+
 #include <QHash>
 #include <QFile>
 #include <QTreeWidget>
+#include "workerthread.h"
 
 /*
  *  OSM File format
@@ -36,48 +37,9 @@ namespace Ui {
 class Widget;
 }
 
-
-typedef struct tag_AttrBlk
-{
-  QString ref;                //<nd ref="3680011507"/>
-
-}AttrBlk, *pAttrBlk;
-
-typedef struct tag_AttrBlk2
-{
-    QString k;
-    QString v;
-
-}AttrBlk2, *pAttrBlk2;
-
-
-typedef struct tag_WayBlk
-{
-    QString id;
-    QVector<AttrBlk> attr;
-    QVector<AttrBlk2> attrB;
-
-}WayBlk, *pWayBlk;
-
-
-typedef struct tag_NodeBlk
-{
-
-  QString id;
-  QString latitude;
-  QString longitude;
-
-}NodeBlk, *pNodeBlk;
-
-typedef struct tag_OSMBlk
-{
-  QVector<NodeBlk> NodeTag;
-  QVector<WayBlk> wayTag;
-
-}OSMBlk, *pOSMBlk;
-
-
-
+typedef QVector<NodeBlk > vNodtag;
+typedef QVector<AttrBlk > vAttr;
+typedef QVector<AttrBlk2 > vAttrB;
 
 class Widget : public QWidget
 {
@@ -97,33 +59,10 @@ private:
     Ui::Widget *ui;
     void initialize();
 
-};
 
-///-------------------------------------------------------------
-class WorkerThread : public QThread
-{
-  Q_OBJECT
-
-public:
-  WorkerThread(const QString &m_strfile, QObject * parent);
-  ~WorkerThread();
-
-protected:
-  void run();
+public slots:
 
 
-private:
-
-const QString filename;
-  QVector <OSMBlk> M_Page();
-
-  NodeBlk ParseNodeBlk(QDomElement &elem);
-  WayBlk ParseWayBlk(QDomElement &elem);
-  AttrBlk ParseAttrBlk(QDomElement &elem);
-  AttrBlk2 ParseAttr2Blk(QDomElement &elem);
-  OSMBlk   ParseOSMBlk(QDomElement &elem);
-
-  QVector <OSMBlk> m_osm;
 };
 
 
