@@ -2,8 +2,10 @@
 Parse *.osm file(openstreetmap) and show on list
 
 ### 1. 목적
-오픈스트리트맵에 수많은 테그가 있습니다.
-이 태그의 데이터를 분류하여 보기 쉽게 하고자 합니다.
+오픈스트리트맵 파일 (*.osm)의 테그의 데이터를 가져와서 보여주는 프로그램 입니다.
+
+This program is for showing tag data on osm files.
+It show on tree form.
 
 ### 2. TO DO List 
 - [X] xml read 하는 API 구성
