@@ -37,10 +37,6 @@ namespace Ui {
 class Widget;
 }
 
-typedef QVector<NodeBlk > vNodtag;
-typedef QVector<AttrBlk > vAttr;
-typedef QVector<AttrBlk2 > vAttrB;
-
 class Widget : public QWidget
 {
     Q_OBJECT
@@ -50,7 +46,7 @@ public:
     ~Widget();
 
     bool Parse(QString filepath);
-
+    void DisplayTreeWidget();
 
 private slots:
     void on_pushBrowse_clicked();
@@ -58,9 +54,24 @@ private slots:
 private:
     Ui::Widget *ui;
     void initialize();
+    WorkerThread *pWorker;
+
+    QIcon folderIcon;
+    QIcon headIcon;
+
+    QTreeWidgetItem *row1;
+    QTreeWidgetItem *sub1;
+    QTreeWidgetItem *sub2;
+    QTreeWidgetItem *sub3;
+
+
+
 
 
 public slots:
+    void slotWayValue(QString id);
+    void slotNodeValue(QString ref);
+    void slotAttrValue(QString m_lat,QString m_long);
 
 
 };

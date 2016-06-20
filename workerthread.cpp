@@ -1,4 +1,5 @@
 #include "workerthread.h"
+
 WorkerThread::WorkerThread(const QString &m_strfile, QObject *parent)
     :QThread(parent)
     ,filename(m_strfile)
@@ -55,10 +56,6 @@ void WorkerThread::run()
 }
 
 
-//typedef QVector<NodeBlk > Nodetag;
-//typedef QVector<AttrBlk > Attr;
-//typedef QVector<AttrBlk2 > AttrB;
-
 OSMBlk WorkerThread::ParseOSMBlk(QDomElement &elem)
 {
     OSMBlk osm;
@@ -70,12 +67,10 @@ OSMBlk WorkerThread::ParseOSMBlk(QDomElement &elem)
         QDomElement elNode = nodeListA.at(i).toElement();
         osm.NodeTag.push_back(ParseNodeBlk(elNode));
 
-        qDebug() << "Node id "<< osm.NodeTag.at(i).id
-                 << "Node lat "<< osm.NodeTag.at(i).latitude
-                 << "Node long "<< osm.NodeTag.at(i).longitude;
+        emit sigAttrValue(osm.NodeTag.at(i).latitude,
+                          osm.NodeTag.at(i).longitude);
 
     }
-
 
     QDomNodeList nodeList = elem.elementsByTagName("way");
 
@@ -84,13 +79,24 @@ OSMBlk WorkerThread::ParseOSMBlk(QDomElement &elem)
         QDomElement el = nodeList.at(i).toElement();
         osm.wayTag.push_back(ParseWayBlk(el));   //way tag 넣기
 
+
     }
 
-    emit sigShowTree(osm.NodeTag,osm.wayTag);
+
+    QDomNodeList nodeRelation = elem.elementsByTagName("relation");
+
+    for (int i =0; i < nodeRelation.count(); i++)
+    {
+        QDomElement el = nodeRelation.at(i).toElement();
+        osm.relationTag.push_back(ParseRelationBlk(el));   //way tag 넣기
+
+    }
+
 
     return osm;
 
 }
+
 
 NodeBlk WorkerThread::ParseNodeBlk(QDomElement &elem)
 {
@@ -108,6 +114,7 @@ WayBlk WorkerThread::ParseWayBlk(QDomElement &elem)
     WayBlk way;
 
     way.id = elem.attribute("id");
+    emit sigWayValue(way.id);
 
     // bring attribute <nd id= />
     QDomNodeList nodeList = elem.elementsByTagName("nd");
@@ -116,6 +123,7 @@ WayBlk WorkerThread::ParseWayBlk(QDomElement &elem)
     {
         QDomElement el = nodeList.at(i).toElement();
         way.attr.push_back(ParseAttrBlk(el));
+        emit sigNodeValue(way.attr.at(i).ref);
 
     }
 
@@ -132,6 +140,32 @@ WayBlk WorkerThread::ParseWayBlk(QDomElement &elem)
     return way;
 
 }
+
+RelationBlk WorkerThread::ParseRelationBlk(QDomElement &elem)
+{
+    RelationBlk tagrelation;
+    tagrelation.id = elem.attribute("id");
+
+    QDomNodeList nodeListC = elem.elementsByTagName("member");
+
+    for(int i = 0 ; i < nodeListC.count() ; i++ )
+    {
+        QDomElement el = nodeListC.at(i).toElement();
+        tagrelation.attr3.push_back(ParseAttr3Blk(el));
+    }
+
+    QDomNodeList nodeListD = elem.elementsByTagName("tag");
+
+    for(int j = 0; j < nodeListD.count(); j++)
+    {
+        QDomElement el = nodeListD.at(j).toElement();
+        tagrelation.attr4.push_back(ParseAttr4Blk(el));
+    }
+
+    return tagrelation;
+
+}
+
 
 AttrBlk WorkerThread::ParseAttrBlk(QDomElement &elem)
 {
@@ -150,9 +184,24 @@ AttrBlk2 WorkerThread::ParseAttr2Blk(QDomElement &elem)
    return attrB;
 }
 
+AttrBlk3 WorkerThread::ParseAttr3Blk(QDomElement &elem)
+{
+    AttrBlk3 attrC;
+    attrC.type = elem.attribute("type");
+    attrC.ref = elem.attribute("ref");
+    attrC.role = elem.attribute("role");
 
+    return attrC;
+}
 
+AttrBlk4 WorkerThread::ParseAttr4Blk(QDomElement &elem)
+{
+    AttrBlk4 attrD;
 
+    attrD.k = elem.attribute("k");
+    attrD.v = elem.attribute("v");
 
+    return attrD;
+}
 
 
